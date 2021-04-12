@@ -16,7 +16,7 @@ public class MyGdxGame extends ApplicationAdapter {
 
 	OrthographicCamera camera;
 	SpriteBatch batch;
-	Texture img; //For the background iamge
+	Texture img; //For the background image
 	Music jumpSound;
 	
 	@Override
