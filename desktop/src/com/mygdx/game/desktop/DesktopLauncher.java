@@ -9,7 +9,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "PFI Projekt";
 		config.width = 1024;  // 16:9 Aspect Ratio
-		config.height = 576; // asdawdasdwadsadw
+		config.height = 576; // asdawdasdwaw
 		new LwjglApplication(new MyGdxGame(), config);
 
 	}
