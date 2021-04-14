@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -17,7 +18,6 @@ public class MyGdxGame extends ApplicationAdapter {
 	OrthographicCamera camera;
 	SpriteBatch batch;
 	Texture img; //For the background image
-	Music jumpSound;
 	Texture playerSprite;
 	player player;
 	int backgroundOffset = 1;
@@ -26,40 +26,60 @@ public class MyGdxGame extends ApplicationAdapter {
 	
 	@Override
 	public void create() {
-		player = new player(400,300);
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+		camera.update();
+
 		batch = new SpriteBatch();
 		img = new Texture("backgroundimage.png");
-		jumpSound = Gdx.audio.newMusic(Gdx.files.internal("jump.mp3"));
-		playerSprite = new Texture(Gdx.files.internal("player1.png"));
+
 		shapeRenderer = new ShapeRenderer();
+
+		player = new player();
+		playerSprite = new Texture(Gdx.files.internal("player1.png"));
+		player.playerX = 150;
+		player.playerY = 50;
+
+
 	}
 
 	@Override
 	public void render() {
-		player.update();
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.setProjectionMatrix(camera.combined);
+		camera.position.x = player.getPlayerX();
 		camera.update();
 			//Begins batch and draws sprites
-		backgroundOffset++;
+
+		backgroundOffset+=5;
 		if (backgroundOffset > Gdx.graphics.getWidth()){
 			backgroundOffset = 0;
 		}
 
 		batch.begin();
-		batch.draw(img,-backgroundOffset,0);
-		batch.draw(playerSprite, player.getPlayerX(),player.getPlayerY(),64,128);
+		for(int i = 0; i <= player.getPlayerX()+512; i += img.getWidth()){
+			batch.draw(img, i, 0);
+		}
+		batch.draw(playerSprite,player.getPlayerX(),player.getPlayerY(),64,128);
+		batch.setProjectionMatrix(camera.combined);
 		batch.end();
 
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-		shapeRenderer.rect(player.getPlayerX()+8, player.getPlayerY(), 50,128);
+		shapeRenderer.rect(player.getPlayerX(), player.getPlayerY(), 48,128);
 		shapeRenderer.end();
 
-	}
+		player.playerX+=5;
+/*
+		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+			player.playerX+=5;
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+			player.playerX-=5;
+		}
 
+ */
+
+	}
 
 	@Override
 	public void dispose() {
