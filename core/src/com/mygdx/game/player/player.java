@@ -1,6 +1,7 @@
 package com.mygdx.game.player;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -52,8 +53,14 @@ public class player {
 
     public void render(){
         batch.begin();
-        batch.draw(playerSprite,playerX,playerY,64,128);
-        score.draw(batch,"SCORE: "+currentScore, playerX-517, playerY+520);
+        velocity.add(gravity);
+        batch.draw(playerSprite,playerPos.x,playerPos.y,64,128);
+
+            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+                playerPos.add(velocity);
+                //velocity.add(gravity);
+            }
+
         batch.end();
 
         collider.begin(ShapeRenderer.ShapeType.Line);
