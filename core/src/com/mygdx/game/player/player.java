@@ -9,20 +9,21 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
-import com.mygdx.game.MyGdxGame;
+import com.badlogic.gdx.math.Vector2;
+
+import static com.mygdx.game.player.Score.*;
 
 public class player {
 
-    private final Object main;
+    public OrthographicCamera camera;
     private Rectangle player;
     private ShapeRenderer collider;
     private SpriteBatch batch;
     private Texture playerSprite;
-    private int currentScore;
-    private float highScore = 0;
-
-    public BitmapFont score;
-    public OrthographicCamera camera;
+    Vector2 playerPos;
+    Vector2 velocity;
+    Vector2 gravity;
+    boolean grounded;
 
     float weight;
     public int playerX = 100;
@@ -31,24 +32,23 @@ public class player {
     public player() {
         camera = new OrthographicCamera();
         camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-
-        main = new MyGdxGame();
+        playerPos = new Vector2(100,50);
+        velocity = new Vector2(0,15);
+        gravity = new Vector2(0,-0.2f);
         collider = new ShapeRenderer();
         playerSprite = new Texture(Gdx.files.internal("player1.png"));
         player = new Rectangle(playerX,playerY,64,64);
         batch = new SpriteBatch();
 
         weight = 0.2f;
+    }
 
-        score = new BitmapFont();
-        score.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        score.setColor(Color.WHITE);
-        score.getData().setScale(2,2);
+    public int getPlayerX() {
+        return playerX;
+    }
 
-        if (currentScore > highScore){
-            highScore = currentScore;
-        }
-
+    public int getPlayerY() {
+        return playerY;
     }
 
     public void render(){
@@ -67,7 +67,6 @@ public class player {
         collider.rect(playerX+8, playerY,50,128);
         collider.end();
 
-        currentScore++;
         playerX+=5;
 
         camera.position.x = playerX;

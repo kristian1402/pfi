@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.player.Score;
 import com.mygdx.game.player.player;
 
 
@@ -17,7 +18,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img; //For the background image
 	player player;
-	BitmapFont score;
+	Score scoreRender;
 
 	@Override
 	public void create() {
@@ -26,13 +27,8 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		batch = new SpriteBatch();
 		img = new Texture("backgroundimage.png");
-
-		score = new BitmapFont();
-		score.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		score.setColor(Color.WHITE);
-		score.getData().setScale(2,2);
-
 		player = new player();
+		scoreRender = new Score();
 	}
 
 	@Override
@@ -47,8 +43,8 @@ public class MyGdxGame extends ApplicationAdapter {
 		}
 		batch.setProjectionMatrix(player.camera.combined);
 		batch.end();
-
 		player.render();
+		scoreRender.render();
 	}
 
 	@Override
@@ -56,5 +52,6 @@ public class MyGdxGame extends ApplicationAdapter {
 		img.dispose();
 		batch.dispose();
 		player.dispose();
+		scoreRender.dispose();
 	}
 }
